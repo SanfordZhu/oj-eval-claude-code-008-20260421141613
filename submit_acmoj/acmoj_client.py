@@ -147,7 +147,12 @@ def main():
             print(f"Error: Failed to read code file: {e}")
             exit(1)
 
-        result = client.submit_code(args.problem_id, args.language, code_text)
+        # ACMOJ only advertises 'cpp' as accepted language but mov-language problems
+        # use .mv files submitted as 'cpp' (the OJ backend handles the file type).
+        lang = args.language
+        if lang == 'mov':
+            lang = 'cpp'
+        result = client.submit_code(args.problem_id, lang, code_text)
 
     elif args.command == "status":
         result = client.get_submission_detail(args.submission_id)
